@@ -2,6 +2,10 @@
 #![allow(unused_variables)]
 #![allow(unused_imports)]
 
+#[macro_use]
+extern crate serde_derive;
+
+extern crate serde;
 extern crate toml;
 
 mod setup;
@@ -10,6 +14,16 @@ use std::collections::HashMap;
 use std::string::String;
 use toml::Value;
 use setup::*;
+
+#[derive(Deserialize)]
+struct Config {
+    slots: Vec<Slot>
+}
+
+#[derive(Deserialize)]
+struct Slot {
+    attributes: HashMap<String, String>
+}
 
 fn main() {
     let slots = vec![0.5,0.5,1.0];
@@ -23,11 +37,11 @@ fn main() {
     // println!("{:?}", test);
 
     let toml_str = r#"
-                    [slots.class1]
+                    [[slots]]
                     time = "morning"
                     level = "A2"
 
-                    [slots.class2]
+                    [[slots]]
                     time = "afternoon"
                     level = "B1"
 
@@ -39,6 +53,9 @@ fn main() {
                     time = {morning = 3, afternoon = 2, evening = 1}
                     level = {A1 = 2, A2 = 2, B1 = 1, B2 = 0, C1 = -1}
                     "#;
-    let values: Value = toml_str.parse().unwrap();
-    println!("{}", values);
+    // let values: Value = toml_str.parse().unwrap();
+    // println!("{}", values);
+    
+    let config: Config = toml::from_str(toml_str).unwrap();
+
 }
