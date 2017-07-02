@@ -1,0 +1,7 @@
+[package]
+name = "sked"
+version = "0.1.0"
+authors = ["fedario <dario-ramming@gmx.de>"]
+
+[dependencies]
+toml = "0.4.1"
